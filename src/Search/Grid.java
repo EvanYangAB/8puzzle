@@ -23,6 +23,10 @@ class Grid {
 		grid = copy(data);
 	}
 
+	public Value[][] getGrid(){
+		return grid;
+	}
+
 	Value[][] copy(Value[][] data){
 		Value[][] temp = new Value[3][3]; 
 		for(int i = 0; i < 3; i++)
@@ -33,7 +37,6 @@ class Grid {
 
 	// maybe require a safe check of returning an empty grid
 	// assuming the input step is valid:means need to be checked outside
-	// todo: add wrong step input error *****
 	Grid change(Move step) throws Exception{
 		Grid temp = null;
 		int i = 0, j = 0;
@@ -48,23 +51,31 @@ class Grid {
 			else
 				switch (step) {
 					case UP:
+						if(i - 1 < 0)
+							throw new Exception("error in grid change method: wrong step");
 						temp = new Grid(swap(i, j, i - 1, j));
 						break;
 					case DOWN:
+						if(i + 1 > 2)
+							throw new Exception("error in grid change method: wrong step");
 						temp = new Grid(swap(i, j, i + 1, j));
 						break;
 					case LEFT:
+						if(j - 1 < 0)
+							throw new Exception("error in grid change method: wrong step")
 						temp = new Grid(swap(i, j, i, j + 1));
-					break;
+						break;
 					case RIGHT:
+						if(j + 1 > 2)
+							throw new Exception("error in grid change method: wrong step")
 						temp = new Grid(swap(i, j, i, j - 1));
-					break;
+						break;
 					default:
-						throw new Exception("error in grid change method:empty step input");
+						throw new Exception("error in grid change method: empty step input");
 				}
 		}
 		if(temp == null)
-			throw new Exception("error in grid change method:grid has not changed");
+			throw new Exception("error in grid change method: grid has not changed");
 		return temp;
 	}
 
@@ -77,5 +88,17 @@ class Grid {
 		tempG[a][b] = tempG[c][d];
 		tempG[c][d] = tempV;
 		return tempG;
+	}
+
+	boolean sameAs(Grid anotherGrid){
+		return sameAs(anotherGrid.getGrid());
+	}
+
+	boolean sameAs(Value[][] otherArray){
+		for(int i = 0; i < 3; i++)
+			for(int j = 0; j < 3; j++)
+				if(grid[i][j] != otherArray[i][j])
+					return false;
+		return true;
 	}
 }

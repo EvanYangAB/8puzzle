@@ -1,20 +1,20 @@
 package Search;
 import java.util.*;
+import Search.Grid.Value;
 
 class Initializer{
 	public void initialize(){
-		HashMap<String, Integer> goal = new HashMap<>();
-		goal.put("one", 1);
-		goal.put("two", 2);
-		goal.put("three", 3);
-		goal.put("four", 4);
-		goal.put("five", 5);
-		goal.put("six", 6);
-		goal.put("seven", 7);
-		goal.put("eight", 8);
-		goal.put("nine", 9);
+		HValue[][]  goal = new Value[3][3] ;
+		goal[0][0] = Value.EMPTY;
+		goal[0][1] = Value.ONE;
+		goal[0][2] = Value.TWO;
+		goal[1][0] = Value.THREE;
+		goal[1][1] = Value.FOUR;
+		goal[1][2] = Value.FIVE;
+		goal[2][0] = Value.SIX;
+		goal[2][1] = Value.SEVEN;
+		goal[2][2] = Value.EIGHT;
 
-		Node.goal.putAll(goal);
 
 	}
 }
