@@ -1,11 +1,11 @@
 package Search;
 import java.util.*;
-import Grid.*
-public class Node {
-	static HashMap<String, Integer> goal;
-	HashMap<String, Integer> status;
+import Search.*;
+class Node {
+	static Value[][] goal;
+	Value[][] status;
 	double h, g;
-	Move lastmove = EMPTY;
+	Move lastmove = Move.EMPTY;
 	Node fatherNode = null;
 	
 	public enum Move{

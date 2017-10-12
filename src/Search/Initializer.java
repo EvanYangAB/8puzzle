@@ -2,8 +2,8 @@ package Search;
 import java.util.*;
 
 class Initializer{
-	public initialize(){
-		HashMap<String, Integer> goal = new HashMap<>;
+	public void initialize(){
+		HashMap<String, Integer> goal = new HashMap<>();
 		goal.put("one", 1);
 		goal.put("two", 2);
 		goal.put("three", 3);
