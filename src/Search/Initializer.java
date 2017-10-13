@@ -15,6 +15,8 @@ class Initializer{
 		goal[2][1] = Value.SEVEN;
 		goal[2][2] = Value.EIGHT;
 
+		Node.goal = goal;
 
+		//randomize grid
 	}
 }

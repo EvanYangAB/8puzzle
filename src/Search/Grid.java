@@ -2,7 +2,6 @@ package Search;
 import java.util.*;
 import Search.*;
 import Search.Node.Move;
-
 class Grid {
 	public enum Value{
 		ONE, TWO, THREE, FOUR, FIVE, SIX, SEVEN, EIGHT, EMPTY
@@ -37,37 +36,39 @@ class Grid {
 
 	// maybe require a safe check of returning an empty grid
 	// assuming the input step is valid:means need to be checked outside
+	// move the white block to other places
 	Grid change(Move step) throws Exception{
 		Grid temp = null;
 		int i = 0, j = 0;
 		while(i < 3){
-			if(grid[i][j] != Value.EMPTY)
+			if(grid[i][j] != Value.EMPTY){
 				if(j == 2){
 					j = 0;
 					i ++;
 				}
 				else
 					j++;
+			}
 			else
 				switch (step) {
-					case UP:
-						if(i - 1 < 0)
-							throw new Exception("error in grid change method: wrong step");
+					case DOWN:
+						//if(i - 1 < 0)
+							//throw new Exception("error in grid change method: wrong step");
 						temp = new Grid(swap(i, j, i - 1, j));
 						break;
-					case DOWN:
-						if(i + 1 > 2)
-							throw new Exception("error in grid change method: wrong step");
+					case UP:
+						//if(i + 1 > 2)
+							//throw new Exception("error in grid change method: wrong step");
 						temp = new Grid(swap(i, j, i + 1, j));
 						break;
-					case LEFT:
-						if(j - 1 < 0)
-							throw new Exception("error in grid change method: wrong step")
+					case RIGHT:
+						//if(j - 1 < 0)
+							//throw new Exception("error in grid change method: wrong step")
 						temp = new Grid(swap(i, j, i, j + 1));
 						break;
-					case RIGHT:
-						if(j + 1 > 2)
-							throw new Exception("error in grid change method: wrong step")
+					case LEFT:
+						//if(j + 1 > 2)
+							//throw new Exception("error in grid change method: wrong step")
 						temp = new Grid(swap(i, j, i, j - 1));
 						break;
 					default:
@@ -90,6 +91,9 @@ class Grid {
 		return tempG;
 	}
 
+	// this method is preped but not used;
+	// goal check has been replaced by checking
+	// whether the distance is zero.
 	boolean sameAs(Grid anotherGrid){
 		return sameAs(anotherGrid.getGrid());
 	}
@@ -100,5 +104,42 @@ class Grid {
 				if(grid[i][j] != otherArray[i][j])
 					return false;
 		return true;
+	}
+
+	public double manhattanDistance(){
+		double result = 0;
+		for(int i = 0; i < 3; i++)
+			for(int j = 0; j < 3; j++)
+				switch(grid[i][j]){
+					case ONE:
+						result += Math.abs(i - 0) + Math.abs(j - 1);
+						break;
+					case TWO:
+						result += Math.abs(i - 0) + Math.abs(j - 2);
+						break;
+					case THREE:
+						result += Math.abs(i - 1) + Math.abs(j - 0);
+						break;
+					case FOUR:
+						result += Math.abs(i - 1) + Math.abs(j - 1);
+						break;
+					case FIVE:
+						result += Math.abs(i - 1) + Math.abs(j - 2);
+						break;
+					case SIX:
+						result += Math.abs(i - 2) + Math.abs(j - 0);
+						break;
+					case SEVEN:
+						result += Math.abs(i - 2) + Math.abs(j - 1);
+						break;
+					case EIGHT:
+						result += Math.abs(i - 2) + Math.abs(j - 2);
+						break;
+					case EMPTY:
+						break;
+					default:
+						throw new Exception("error in manhattanDistance")	
+				}
+		return result;
 	}
 }
