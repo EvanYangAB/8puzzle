@@ -6,7 +6,9 @@ class Grid {
 	public enum Value{
 		ONE, TWO, THREE, FOUR, FIVE, SIX, SEVEN, EIGHT, EMPTY
 	}
+
 	Value[][] grid = new Value[3][3];
+	
 	class Point{
 		int col, row;
 		Value piece = Value.EMPTY;
@@ -106,8 +108,8 @@ class Grid {
 		return true;
 	}
 
-	public double manhattanDistance(){
-		double result = 0;
+	public int manhattanDistance() throws Exception{
+		int result = 0;
 		for(int i = 0; i < 3; i++)
 			for(int j = 0; j < 3; j++)
 				switch(grid[i][j]){
@@ -138,8 +140,18 @@ class Grid {
 					case EMPTY:
 						break;
 					default:
-						throw new Exception("error in manhattanDistance")	
+						throw new Exception("error in manhattanDistance");	
 				}
+		return result;
+	}
+
+	public String toString(){
+		String result = new String();
+		for(int i = 0; i < 3; i++){
+			for(int j = 0; j < 3; j++)
+				result += grid[i][j] + " ";
+			result += "\n";
+		}
 		return result;
 	}
 }

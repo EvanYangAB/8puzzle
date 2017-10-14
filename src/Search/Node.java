@@ -1,12 +1,13 @@
 package Search;
 import java.util.*;
 import Search.*;
+import Search.Grid.Value;
 class Node {
 	static Value[][] goal;
 	static ArrayList<Node> queue = new ArrayList<Node>();
 	static ArrayList<Node> searchedQueue = new ArrayList<Node>();
 	Grid status;
-	double f, h;
+	int f, h;
 	Move lastmove = Move.EMPTY;
 	Node fatherNode = null;
 	
@@ -14,28 +15,29 @@ class Node {
 		UP, DOWN, LEFT, RIGHT, EMPTY;
 	}
 
-	public Node(Grid data, double stepsIn, Move lastmoveIn, Node fatherNodeIn){
-		fatherNode = fatherNodeIn;
+	public Node(Grid data, int stepsIn, Move lastmoveIn, Node fatherNodeIn) 
+															throws Exception{
 		this(data, stepsIn, lastmoveIn);
+		fatherNode = fatherNodeIn;
 	}
 
-	public Node(Grid data, double stepsIn, Move lastmoveIn){
-		lastmove = lastmoveIn;
+	public Node(Grid data, int stepsIn, Move lastmoveIn) throws Exception{
 		this(data, stepsIn);
+		lastmove = lastmoveIn;
 	}
 
-	public Node(Grid data, double stepsIn){
+	public Node(Grid data, int stepsIn) throws Exception{
 		status = data;
 		f = stepsIn;
 		h = hOfx();
 	}
 
 	//set h of this current node and return h value
-	public double hOfx(){
+	public int hOfx() throws Exception{
 		return status.manhattanDistance();
 	}
 
-	public double gofX(){
+	public int gofX(){
 		return h + f;
 	}
 
@@ -46,13 +48,16 @@ class Node {
 
 	// remove current node from the queue to
 	// searched queue
-	static public void operator(){
+	static public void operator() throws Exception{
 		while(!queue.isEmpty()){
 			Node current = queue.get(0);
 			queue.remove(0);
 
 			//check goal
-
+			if(current.isGoal()){
+				current.printGoal();
+				return;
+			}
 			//optimization
 
 			int i = 0, j = 0;
@@ -68,22 +73,32 @@ class Node {
 				else 
 					break;
 			if(i - 1 >= 0)
-				search.add(current.displacement(LEFT), current);
+				queue.add(current.displacement(Move.LEFT));
 			if(i + 1 <= 2)
-				search.add(current.displacement(RIGHT), current);
+				queue.add(current.displacement(Move.RIGHT));
 			if(j - 1 >= 0)
-				search.add(current.displacement(UP), current);
+				queue.add(current.displacement(Move.UP));
 			if(j + 1 <= 2)
-				search.add(current.displacement(DOWN), current);
-			sortQueue();
+				queue.add(current.displacement(Move.DOWN));
+			queue.sort((Node n1, Node n2) -> n1.gofX() - n2.gofX());
 		}
 	}
+
 	// return a new node moving the white
 	// block to other locations
-	Node displacement(Move direction, Node fatherNode){}
+	Node displacement(Move direction) throws Exception{
+		return new Node(status.change(direction), f + 1, direction, this);
+	}
 
-	// sort the search queue
-	public void sortQueue(){
+	void printGoal(){
+		if(fatherNode != null){
+			fatherNode.printGoal();
+			System.out.println(lastmove.name());
+		}
+		System.out.println(this);
+	}
 
+	String toSting(){
+		return status.toString();
 	}
 }

@@ -4,7 +4,7 @@ import Search.Grid.Value;
 
 class Initializer{
 	public void initialize(){
-		HValue[][]  goal = new Value[3][3] ;
+		Value[][]  goal = new Value[3][3] ;
 		goal[0][0] = Value.EMPTY;
 		goal[0][1] = Value.ONE;
 		goal[0][2] = Value.TWO;
