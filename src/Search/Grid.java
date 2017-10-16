@@ -8,7 +8,7 @@ class Grid {
 	}
 
 	Value[][] grid = new Value[3][3];
-	
+
 	class Point{
 		int col, row;
 		Value piece = Value.EMPTY;
@@ -54,24 +54,24 @@ class Grid {
 			else
 				switch (step) {
 					case DOWN:
-						//if(i - 1 < 0)
-							//throw new Exception("error in grid change method: wrong step");
-						temp = new Grid(swap(i, j, i - 1, j));
-						break;
-					case UP:
-						//if(i + 1 > 2)
-							//throw new Exception("error in grid change method: wrong step");
+						if(i + 1 > 2)
+							return null;
 						temp = new Grid(swap(i, j, i + 1, j));
 						break;
-					case RIGHT:
-						//if(j - 1 < 0)
-							//throw new Exception("error in grid change method: wrong step")
-						temp = new Grid(swap(i, j, i, j + 1));
+					case UP:
+						if(i - 1 < 0)
+							return null;
+						temp = new Grid(swap(i, j, i - 1, j));
 						break;
 					case LEFT:
-						//if(j + 1 > 2)
-							//throw new Exception("error in grid change method: wrong step")
+						if(j - 1 < 0)
+							return null;
 						temp = new Grid(swap(i, j, i, j - 1));
+						break;
+					case RIGHT:
+						if(j + 1 > 2)
+							return null;
+						temp = new Grid(swap(i, j, i, j + 1));
 						break;
 					default:
 						throw new Exception("error in grid change method: empty step input");

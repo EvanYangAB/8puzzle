@@ -72,13 +72,9 @@ class Node {
 				}
 				else 
 					break;
-			if(i - 1 >= 0)
 				queue.add(current.displacement(Move.LEFT));
-			if(i + 1 <= 2)
 				queue.add(current.displacement(Move.RIGHT));
-			if(j - 1 >= 0)
 				queue.add(current.displacement(Move.UP));
-			if(j + 1 <= 2)
 				queue.add(current.displacement(Move.DOWN));
 			queue.sort((Node n1, Node n2) -> n1.gofX() - n2.gofX());
 		}
@@ -87,6 +83,9 @@ class Node {
 	// return a new node moving the white
 	// block to other locations
 	Node displacement(Move direction) throws Exception{
+		Grid temp = status.change(direction);
+		if(temp == null)
+			return null;
 		return new Node(status.change(direction), f + 1, direction, this);
 	}
 
