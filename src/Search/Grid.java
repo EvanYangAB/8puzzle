@@ -39,7 +39,7 @@ class Grid {
 	// maybe require a safe check of returning an empty grid
 	// assuming the input step is valid:means need to be checked outside
 	// move the white block to other places
-	Grid change(Move step) throws Exception{
+	public Grid change(Move step) throws Exception{
 		Grid temp = null;
 		int i = 0, j = 0;
 		while(i < 3){
@@ -51,7 +51,7 @@ class Grid {
 				else
 					j++;
 			}
-			else
+			else{
 				switch (step) {
 					case DOWN:
 						if(i + 1 > 2)
@@ -76,6 +76,8 @@ class Grid {
 					default:
 						throw new Exception("error in grid change method: empty step input");
 				}
+				break;
+			}
 		}
 		if(temp == null)
 			throw new Exception("error in grid change method: grid has not changed");
@@ -149,7 +151,7 @@ class Grid {
 		String result = new String();
 		for(int i = 0; i < 3; i++){
 			for(int j = 0; j < 3; j++)
-				result += grid[i][j] + " ";
+				result += String.format("|%5s|", grid[i][j]) + " ";
 			result += "\n";
 		}
 		return result;

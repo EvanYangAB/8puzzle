@@ -1,7 +1,8 @@
 package Search;
 import java.util.*;
 import Search.Grid.Value;
-import static Search.Node.Move;
+import Search.Node;
+import Search.Node.Move;
 
 class Initializer{
 	static Stack<Move> steps = new Stack<>();
@@ -10,7 +11,7 @@ class Initializer{
 	private final static Random RANDOM = new Random();
 	private final static int SIZE = MOVES.size();
 
-	public static void initialize() throws Exception{
+	public static void initialize(int randomTimes) throws Exception{
 		Value[][]  goal = new Value[3][3] ;
 		goal[0][0] = Value.EMPTY;	 
 		goal[0][1] = Value.ONE;
@@ -26,12 +27,16 @@ class Initializer{
 		Grid start = new Grid(goal);
 		System.out.println(start);
 		//randomize grid
-		for(int i = 0; i < 11; i ++){
-			System.out.println("initialize function:" + i);
+		for(int i = 0; i < randomTimes; i ++){
+			System.out.println("selecting random step:" + i);
 			start = randomizeStep(start);
 		}
-		System.out.println("11111");
+		System.out.println("random grid initialized.");
 		System.out.println(start);
+
+		Node root = new Node(start, 0, Move.EMPTY, null);
+		Node.addToQue(root);
+		Node.operator();
 	}
 
 	static Grid randomizeStep(Grid recipient) throws Exception{
@@ -39,15 +44,24 @@ class Initializer{
 		Grid modified = null;
 		int i = 0;
 		do{
-			System.out.println(i++);
+			//System.out.println(i++);
 			temp = MOVES.get(RANDOM.nextInt(4));
+			System.out.println("step:" + temp.name());
 			modified = recipient.change(temp);
+			System.out.println("changed grid:\n" + modified);
+			if(modified == null)
+				System.out.println("randoming again for invalid step");
 		} while(modified == null);
-		steps.push(temp);
-		return modified;
+		if(modified != null){
+			steps.push(temp);
+			return modified;
+		}
+		System.out.println("------------------------------");
+		return recipient;
+
 	}
 
 	public static void main(String[] args) throws Exception {
-		initialize();
+		initialize(40);
 	}
 }

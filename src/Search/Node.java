@@ -45,6 +45,9 @@ class Node {
 		return h == 0;
 	}
 
+	static public void addToQue(Node toBeAdded){
+		queue.add(toBeAdded);
+	}
 
 	// remove current node from the queue to
 	// searched queue
@@ -53,30 +56,28 @@ class Node {
 			Node current = queue.get(0);
 			queue.remove(0);
 
-			//check goal
+			// check goal
 			if(current.isGoal()){
+				System.out.println("Goal reached!");
 				current.printGoal();
 				return;
 			}
-			//optimization
+			// optimization
 
-			int i = 0, j = 0;
-			while(i < 3)
-				if(current.status.grid[i][j] != Value.EMPTY){
-					if(j == 2){
-						j = 0;
-						i++;
-					}
-					else
-						j++;
-				}
-				else 
-					break;
-				queue.add(current.displacement(Move.LEFT));
-				queue.add(current.displacement(Move.RIGHT));
-				queue.add(current.displacement(Move.UP));
-				queue.add(current.displacement(Move.DOWN));
-			queue.sort((Node n1, Node n2) -> n1.gofX() - n2.gofX());
+			queue.add(current.displacement(Move.LEFT));
+			queue.add(current.displacement(Move.RIGHT));
+			queue.add(current.displacement(Move.UP));
+			queue.add(current.displacement(Move.DOWN));
+
+			// ensure there is no duplicates and remove nulls
+			Set<Node> nodeSet = new HashSet<>();
+			nodeSet.addAll(queue);
+			queue.clear();
+			queue.addAll(nodeSet);
+			queue.remove(null);
+
+			queue.sort(Comparator.comparing(Node::gofX, 
+				Comparator.nullsLast(Comparator.naturalOrder())));
 		}
 	}
 
@@ -89,7 +90,7 @@ class Node {
 		return new Node(status.change(direction), f + 1, direction, this);
 	}
 
-	void printGoal(){
+	void printGoal() throws Exception{
 		if(fatherNode != null){
 			fatherNode.printGoal();
 			System.out.println(lastmove.name());
@@ -97,7 +98,28 @@ class Node {
 		System.out.println(this);
 	}
 
-	String toSting(){
-		return status.toString();
+	Move reverse(Move blank) throws Exception{
+		switch (blank) {
+			case DOWN:
+				return Move.UP;
+			case UP:
+				return Move.DOWN;
+			case LEFT:
+				return Move.RIGHT;
+			case RIGHT:
+				return Move.LEFT;
+			default:
+				throw new Exception("error in reverse method: empty step input");
+		}
+	}
+
+	public String toString(){
+		String result;
+		try {
+			result =  hOfx() + "\n" + status.toString();
+		} catch (Exception e) {
+			result = "error in calculating h";
+		}
+		return result;
 	}
 }
